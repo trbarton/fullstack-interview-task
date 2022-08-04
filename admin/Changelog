@@ -1,1 +1,6 @@
 - npm audit to remove vulnerabilities
+- replaced depracated request module with node-fetch
+    - node fetch v3 requires a workaround for projects using CommonJS
+    - Given time the project could be updated to use ES6 imports
+- updated investments endpoint to use node-fetch
+- updated depracated res.send(status code) to res.sendStatus(status Code)
