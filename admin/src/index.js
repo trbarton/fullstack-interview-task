@@ -4,6 +4,7 @@ const config = require("config");
 // Not happy with this workaround but the alternative is to completely re-write with ES6 imports
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const helpers = require("./helpers");
 
 const app = express();
 
@@ -15,6 +16,19 @@ app.get("/investments/:id", (req, res) => {
     .then((response) => response.json())
     .then((body) => {
       res.send(body);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+app.get("/generate-report", (req, res) => {
+  helpers
+    .fetchInvestmentData()
+    .then(csv => {
+      console.log(csv);
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.error(err);
