@@ -1,0 +1,17 @@
+[{
+    "id": "1",
+    "userId": "1",
+    "firstName": "Billy",
+    "lastName": "Bob",
+    "investmentTotal": 1400,
+    "date": "2020-01-01",
+    "holdings": [{"id": "2", "investmentPercentage": 1}]
+  }, {
+    "id": "2",
+    "userId": "2",
+    "firstName": "Sheila",
+    "lastName": "Aussie",
+    "investmentTotal": 20000,
+    "date": "2020-01-01",
+    "holdings": [{"id": "1", "investmentPercentage": 0.5}, {"id": "2", "investmentPercentage": 0.5}]
+  }]
