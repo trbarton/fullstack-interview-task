@@ -75,3 +75,4 @@ Financial Companies - localhost:8082
 
 Admin - localhost:8083
 - `/investments/:id` get an investment record by id
+- `/generate-report` creates a csv text of all users investments and POSTs it to the investments service
