@@ -75,4 +75,45 @@ Financial Companies - localhost:8082
 
 Admin - localhost:8083
 - `/investments/:id` get an investment record by id
-- `/generate-report` creates a csv text of all users investments and POSTs it to the investments service
+- `/generate-report` (POST Method) creates a csv text of all users investments and POSTs it to the investments service
+
+### Additional Scripts
+Unit tests can be run from the admin directory using:
+```bash
+npm test
+```
+
+During development of a singular service the pm2 service can be used. pm2 runs and persists your node js app.
+To install it: 
+```bash
+npm install pm2@latest -g
+```
+Then to start the dependent services:
+```bash
+cd investments 
+pm2 start npm --name "investments-service" -- start
+
+cd ../financial-companies
+pm2 start npm --name "financial-companies-service" -- start
+```
+
+### Answers to Questions 
+1. How might you make this service more secure?
+    - The admin service should have some form of authentication middleware to prevent unauthorized persons from accessing its endpoints. Especially if there is a frontend UI pointing at it. Https is also a requirement for this
+    - The other two services could be restricted to only allow access from the admin service providing a single point of entry. If hosted on docker or Kubernetes this can be done easily without ever exposing the investments or companies service to the outside world.
+2. How would you make this solution scale to millions of records?
+
+    There are multiple issues with the current implementation to allow scaling to millions of records. 
+    - Firstly, the /generate-report endpoint waits for the csv to be generated before sending the response to the client. With millions of rows this would likely cause a request to time out. This could be solved in many different ways, such as: closing the request straight away with a 200 code and requiring the user to check back on progress through another API endpoint, or by using a websocket to provide a persistent connection with updates on progress.
+    - Secondly, this could put significant load on the service while it processes the csv. It would be wise to employ load balancing and horizontal scaling to make sure other users can continue to use the service with no ill effects. 
+    - Lastly, the investments service has a 10mb cap on data sent to it. Some form of streaming might need to be set up to allow the CSV to be sent to the investments service over time. An alternative to this would be to make the report smaller by offering the admin filters for things like the date range. 
+3. What else would you have liked to improve given more time?
+- Implement some more extensive unit tests
+- Convert the project to ES6 import syntax to allow use of node-fetch v3 (v2 is still under support however)
+- Make more use of the Ramda library (This is my first time using it and it won't be the last)
+    - This includes replacing the nested for loops used to create the CSV  
+
+### Additional notes
+Please take my commenting style with a pinch of salt. It is not reflective of my real world usage, I wanted to use them to convey my thought process to the recruitment team around certain aspects of my code.
+
+The way I brokedown this task should be clearly visible in the git history of this repo. If not there is a changelog with the rough order of events in the /admin directory.
