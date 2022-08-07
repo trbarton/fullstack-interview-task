@@ -5,3 +5,5 @@
 - updated investments endpoint to use node-fetch
 - updated depracated res.send(status code) to res.sendStatus(status Code)
 - Added helpers module for csv report logic to avoid bloat in index.js
+- Split App and Server logic into two separate files to allow for Jest testing
+- Implemented Unit testing of functions and API endpoints using Jest, fetch-mock-jest, and supertest

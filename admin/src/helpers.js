@@ -1,8 +1,6 @@
-const R = require('ramda');
+const R = require("ramda");
 const config = require("config");
-// Not happy with this workaround but the alternative is to completely re-write with ES6 imports
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const fetch = require("node-fetch");
 
 const fetchInvestmentData = async () => {
     // This feels like an anti-pattern, I would appreciate feedback and an alternative solution
@@ -39,3 +37,4 @@ const makeCSV = (investmentsArr, financialCompaniesArr) => {
 }
 
 module.exports.fetchInvestmentData = fetchInvestmentData;
+module.exports.makeCSV = makeCSV;
